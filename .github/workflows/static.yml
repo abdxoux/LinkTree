@@ -1,43 +1,282 @@
-# Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Abderahmane Zahraoui | Links</title>
 
-on:
-  # Runs on pushes targeting the default branch
-  push:
-    branches: ["master"]
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet"
+        href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
+        crossorigin="anonymous">
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+  <style>
+    /* Base background */
+    body {
+      background-color: #020617; /* slate-950 */
+    }
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
+    /* Subtle grid pattern */
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      background-size: 42px 42px;
+      background-image:
+              linear-gradient(rgba(148,163,184,0.08) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(148,163,184,0.08) 1px, transparent 1px);
+      opacity: 0.7;
+      z-index: -30;
+    }
 
-jobs:
-  # Single deploy job since we're just deploying
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          # Upload entire repository
-          path: '.'
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+    /* Animated color blobs */
+    .blob {
+      position: fixed;
+      border-radius: 9999px;
+      filter: blur(40px);
+      opacity: 0.9;
+      mix-blend-mode: screen;
+      z-index: -25;
+    }
+
+    .blob-1 {
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, rgba(56,189,248,0.9), transparent 60%);
+      top: -60px;
+      left: -40px;
+      animation: float1 26s ease-in-out infinite alternate;
+    }
+
+    .blob-2 {
+      width: 360px;
+      height: 360px;
+      background: radial-gradient(circle, rgba(52,211,153,0.9), transparent 60%);
+      bottom: -80px;
+      right: -40px;
+      animation: float2 30s ease-in-out infinite alternate;
+    }
+
+    .blob-3 {
+      width: 280px;
+      height: 280px;
+      background: radial-gradient(circle, rgba(248,250,252,0.45), transparent 60%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0.35;
+      animation: pulseCenter 18s ease-in-out infinite alternate;
+    }
+
+    @keyframes float1 {
+      0% { transform: translate(0,0) scale(1); }
+      100% { transform: translate(40px,40px) scale(1.15); }
+    }
+
+    @keyframes float2 {
+      0% { transform: translate(0,0) scale(1.05); }
+      100% { transform: translate(-40px,-20px) scale(1.2); }
+    }
+
+    @keyframes pulseCenter {
+      0% { transform: translate(-50%, -50%) scale(1); }
+      100% { transform: translate(-48%, -52%) scale(1.12); }
+    }
+
+    /* Dark overlay for depth and readability */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background:
+              radial-gradient(circle at top, rgba(15,23,42,0.65), transparent 55%),
+              linear-gradient(to bottom, rgba(15,23,42,0.96), rgba(15,23,42,0.98));
+      z-index: -20;
+    }
+
+    /* Mouse-follow glow */
+    .cursor-glow {
+      position: fixed;
+      width: 220px;
+      height: 220px;
+      border-radius: 9999px;
+      pointer-events: none;
+      mix-blend-mode: screen;
+      background: radial-gradient(circle, rgba(56,189,248,0.42), transparent 65%);
+      opacity: 0.7;
+      transform: translate(-50%, -50%);
+      z-index: -10;
+      transition: transform 0.05s linear;
+    }
+
+    /* Glass card with subtle border glow */
+    .glass-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 1.5rem;
+      background: radial-gradient(circle at top left, rgba(56,189,248,0.16), transparent 55%),
+      rgba(15,23,42,0.82);
+      box-shadow:
+              0 0 0 1px rgba(148,163,184,0.45),
+              0 22px 60px rgba(15,23,42,0.9);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+    }
+
+    .glass-card::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      background: radial-gradient(circle at 0 0, rgba(56,189,248,0.4), transparent 55%),
+      radial-gradient(circle at 100% 0, rgba(52,211,153,0.4), transparent 55%);
+      opacity: 0.25;
+      z-index: -1;
+    }
+
+    /* Social icon hover */
+    .social-icon {
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+    }
+    .social-icon:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 12px 30px rgba(15,23,42,0.9);
+      border-color: rgba(148,163,184,0.9);
+      background-color: rgba(15,23,42,0.9);
+    }
+  </style>
+</head>
+<body class="min-h-screen text-slate-100 antialiased overflow-hidden">
+
+<!-- Background layers -->
+<div class="bg-grid"></div>
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+<div class="overlay"></div>
+
+<!-- Mouse-tracked glow -->
+<div id="cursor-glow" class="cursor-glow"></div>
+
+<!-- Page content -->
+<main class="flex items-center justify-center min-h-screen px-4">
+  <section class="glass-card max-w-xl w-full p-8 md:p-10">
+    <!-- Top: Name & subtitle -->
+    <header class="text-center mb-8">
+      <p class="text-xs uppercase tracking-[0.2em] text-sky-300/70 mb-2">
+        Portfolio Links
+      </p>
+      <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight text-sky-100">
+        Abderahmane Zahraoui
+      </h1>
+      <p class="mt-3 text-sm md:text-base text-slate-200">
+        I am a <span class="font-semibold text-sky-200">Desktop Developer</span>,
+        <span class="font-semibold text-sky-200">Digital Marketer</span>, and
+        <span class="font-semibold text-sky-200">STEAM Mentor</span> based in Béchar, Algeria.
+      </p>
+    </header>
+
+    <!-- Social icons row -->
+    <div class="flex items-center justify-center gap-4 mb-8">
+      <!-- Instagram -->
+      <a href="https://www.instagram.com/abdou_.zahraoui/"
+         target="_blank"
+         class="social-icon rounded-full bg-slate-900/70 border border-slate-600/70 w-12 h-12 flex items-center justify-center">
+        <i class="fab fa-instagram text-xl text-pink-400"></i>
+      </a>
+
+      <!-- Facebook -->
+      <a href="https://www.facebook.com/abderahmane.zahraoui"
+         target="_blank"
+         class="social-icon rounded-full bg-slate-900/70 border border-slate-600/70 w-12 h-12 flex items-center justify-center">
+        <i class="fab fa-facebook-f text-xl text-blue-400"></i>
+      </a>
+
+      <!-- GitHub -->
+      <a href="https://github.com/abdxoux"
+         target="_blank"
+         class="social-icon rounded-full bg-slate-900/70 border border-slate-600/70 w-12 h-12 flex items-center justify-center">
+        <i class="fab fa-github text-xl text-slate-200"></i>
+      </a>
+
+      <!-- LinkedIn -->
+      <a href="https://www.linkedin.com/in/abderrahmane-zahraoui/"
+         target="_blank"
+         class="social-icon rounded-full bg-slate-900/70 border border-slate-600/70 w-12 h-12 flex items-center justify-center">
+        <i class="fab fa-linkedin-in text-xl text-sky-400"></i>
+      </a>
+    </div>
+
+    <!-- Buttons section -->
+    <div class="space-y-3">
+      <a href="https://github.com/abdxoux"
+         target="_blank"
+         class="w-full inline-flex items-center justify-center px-4 py-2.5 rounded-2xl
+                  border border-sky-400/70 bg-sky-500/10 text-sky-100 text-sm md:text-base
+                  font-medium hover:bg-sky-500/20 hover:border-sky-300
+                  transition-colors duration-150">
+        <i class="fab fa-github mr-2 text-lg"></i>
+        View my GitHub projects
+      </a>
+
+      <a href="https://www.linkedin.com/in/abderrahmane-zahraoui/"
+         target="_blank"
+         class="w-full inline-flex items-center justify-center px-4 py-2.5 rounded-2xl
+                  border border-emerald-400/70 bg-emerald-500/10 text-emerald-100
+                  text-sm md:text-base font-medium
+                  hover:bg-emerald-500/20 hover:border-emerald-300
+                  transition-colors duration-150">
+        <i class="fab fa-linkedin mr-2 text-lg"></i>
+        Connect with me on LinkedIn
+      </a>
+
+      <!-- Email -->
+      <a href="mailto:zahraouiabderahmane4@gmail.com"
+         class="w-full inline-flex items-center justify-center px-4 py-2.5 rounded-2xl
+                  border border-slate-400/70 bg-slate-700/40 text-slate-100
+                  text-sm md:text-base font-medium
+                  hover:bg-slate-600 hover:border-slate-200
+                  transition-colors duration-150">
+        <i class="fas fa-envelope mr-2 text-lg"></i>
+        Email me at zahraouiabderahmane4@gmail.com
+      </a>
+
+      <!-- Call me -->
+      <a href="tel:0798924334"
+         class="w-full inline-flex items-center justify-center px-4 py-2.5 rounded-2xl
+                  border border-orange-400/70 bg-orange-500/10 text-orange-100
+                  text-sm md:text-base font-medium
+                  hover:bg-orange-500/20 hover:border-orange-300
+                  transition-colors duration-150">
+        <i class="fas fa-phone mr-2 text-lg"></i>
+        Call me: 0798924334
+      </a>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-6 text-center text-xs text-slate-400">
+      © <span id="year"></span> Abderahmane Zahraoui
+    </footer>
+  </section>
+</main>
+
+<script>
+  // Set current year safely as a string
+  const yearSpan = document.getElementById('year');
+  if (yearSpan) {
+    yearSpan.textContent = new Date().getFullYear().toString();
+  }
+
+  // Mouse-tracking glow
+  const glow = document.getElementById('cursor-glow');
+  if (glow) {
+    window.addEventListener('pointermove', function (event) {
+      const x = event.clientX;
+      const y = event.clientY;
+      glow.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+    });
+  }
+</script>
+</body>
+</html>
